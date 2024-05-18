@@ -49,4 +49,19 @@ group by s.customer_id;
 
 **2. How many days has each customer visited the restaurant?**
 
+```sql
+select 
+  customer_id,
+  count(order_date) as no_of_days_visited
+from
+   (
+	select 
+              customer_id,
+              order_date
+	from sales
+	group by customer_id,order_date
+   ) as x
+group by customer_id;
+```
+
 
