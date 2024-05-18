@@ -3,10 +3,14 @@
 <img src="https://github.com/Dharshan68/images/blob/main/Screenshot%202024-05-18%20185342.png" alt="Image" width="500" height="520">
 
 ## 📚 Table of Contents
-- [SQL Skills Gained](#SQL-skills-gained)
+- [SQL Skills Gained](#sql-skills-gained)
 - [Case Study Description](#case-study-description)
 - [Entity Relationship Diagram](#entity-relationship-diagram)
 - [Question and Solution](#question-and-solution)
+
+***
+
+## SQL Skills Gained
 
 ***
 
@@ -17,4 +21,9 @@ Danny's Diner is a small restaurant that has been collecting data on its custome
 
 ## Entity Relationship Diagram
 
+![image](https://github.com/Dharshan68/images/blob/main/Screenshot%202024-05-18%20202858.png)
+
+***
+
+## Question and Solution
 
