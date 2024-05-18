@@ -29,7 +29,7 @@ Danny's Diner is a small restaurant that has been collecting data on its custome
 
 **1. What is the total amount each customer spent at the restaurant?**
 
-````sql
+```sql
 select
   s.customer_id,
   sum(price) as total_amount
@@ -37,4 +37,16 @@ from sales s
 inner join menu m
 on s.product_id = m.product_id
 group by s.customer_id;
+```
+**Solution :**
+| customer_id | spent |
+|-------------|-------|
+| A           | 76    |
+| B           | 74    |
+| C           | 36    |
+
+***
+
+**2. How many days has each customer visited the restaurant?**
+
 
