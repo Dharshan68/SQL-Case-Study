@@ -31,15 +31,15 @@ Danny's Diner is a small restaurant that has been collecting data on its custome
 
 ```sql
 select
-  s.customer_id,
-  sum(price) as total_amount
+        s.customer_id,
+	sum(price) as total_amount_spent
 from sales s
 inner join menu m
 on s.product_id = m.product_id
 group by s.customer_id;
 ```
 **Solution :**
-| customer_id | spent |
+| customer_id | total_amount_spent |
 |-------------|-------|
 | A           | 76    |
 | B           | 74    |
@@ -50,18 +50,113 @@ group by s.customer_id;
 **2. How many days has each customer visited the restaurant?**
 
 ```sql
-select 
-  customer_id,
-  count(order_date) as no_of_days_visited
-from
+with cte as
    (
 	select 
               customer_id,
               order_date
 	from sales
 	group by customer_id,order_date
-   ) as x
+   ) 
+select 
+      customer_id,
+      count(order_date) as no_of_days_visited
+from cte
 group by customer_id;
 ```
+**Solution :**
+| customer_id | no_of_days_visited |
+|-------------|--------|
+| A           | 4      |
+| B           | 6      |
+| C           | 2      |
+
+***
+
+**3. What was the first item from the menu purchased by each customer?**
+```sql
+select 
+      customer_id,
+      order_date,
+      product_name
+from
+(
+	select
+	       s.customer_id,
+	       s.order_date,
+	       m.product_name,
+	       row_number() over(partition by s.customer_id
+	       order by s.order_date) as ranks
+	from sales s
+	inner join menu m
+	on s.product_id = m.product_id
+) as x
+where ranks = 1;
+```
+**Solution :**
+| customer_id | order_date | product_name |           
+|-------------|--------------|--------------|
+| A           | 2021-01-01        |  sushi  |
+| B           | 2021-01-01        |  curry  |
+| C           | 2021-01-01        |  ramen  |
+
+***
+
+**4. What is the most purchased item on the menu?**
+```sql
+select
+       top 1
+       m.product_name,
+       count(*) as total_purchased
+from sales s
+join menu m
+on s.product_id = m.product_id
+group by m.product_name
+order by total desc;
+```
+**Solution :**
+| product_name | total_purchased |
+|--------------|-----------|
+| ramen        | 8         |
+
+***
+
+**5. Which item was the most popular for each customer?**
+```sql
+with cte as
+(
+	select
+	       customer_id,
+               product_id,
+               count(*) as order_count,
+               dense_rank() over(partition by customer_id
+               order by count(*) desc) as ranks
+	from sales
+	group by
+	         customer_id,
+                 product_id
+)
+select
+       c.customer_id,
+       c.order_count,
+       m.product_name 
+from cte c
+join menu m
+on c.product_id = m.product_id
+where ranks = 1;
+```
+**Solution :**
+customer_id|order_count|product_name
+---|---|---
+A|3|ramen
+B|2|sushi
+B|2|curry
+B|2|ramen
+C|3|ramen
+
+***
+
+**6. Which item was purchased first by the customer after they became a member?**
+
 
 
