@@ -28,6 +28,25 @@ Danny's Diner is a small restaurant that has been collecting data on its custome
 
 ## Datasets
 
+### Sales Table :
+
+The sales table captures all customer_id level purchases with an corresponding order_date and product_id information for when and what menu items were ordered.
+
+<img src="https://github.com/Dharshan68/images/blob/main/Screenshot%202024-05-22%20153555.png" alt="Image" width="500" height="520">
+
+### Menu Table :
+
+The menu table maps the product_id to the actual product_name and price of each menu item.
+                                           
+<img src="https://github.com/Dharshan68/images/blob/main/Screenshot%202024-05-22%20153625.png" alt="Image" width="400" height="150">
+
+### Members Table :
+
+The final members table captures the join_date when a customer_id joined the beta version of the Danny’s Diner loyalty program.
+
+
+<img src="https://github.com/Dharshan68/images/blob/main/Screenshot%202024-05-22%20153611.png" alt="Image" width="400" height="120">
+
 ***
 
 ## Question and Solution
