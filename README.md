@@ -291,6 +291,95 @@ B|3|40
 
 ***
 
+**9. Join All The Things, Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.**
+
+```sql
+select
+	s.customer_id,
+	s.order_date,
+	m.product_name,
+	m.price,
+	case when s.order_date >= ms.join_date
+	then 'Y' else 'N' end as member 
+from sales s                                                       
+join menu m                                                         
+on s.product_id = m.product_id                                      
+left join members ms
+on s.customer_id = ms.customer_id
+```
+
+**Solution :**
+customer_id|order_date|product_name|price|member
+---|---|---|---|---
+A	|2021-01-01|	sushi|	10|	N
+A	|2021-01-01|	curry|	15|	N
+A	|2021-01-07|	curry|	15|	Y
+A	|2021-01-10|	ramen|	12|	Y
+A	|2021-01-11|	ramen|	12|	Y
+A	|2021-01-11|	ramen|	12|	Y
+B	|2021-01-01|	curry|	15|	N
+B	|2021-01-02|	curry|	15|	N
+B	|2021-01-04|	sushi|	10|	N
+B	|2021-01-11|	sushi|	10|	Y
+B	|2021-01-16|	ramen|	12|	Y
+B	|2021-02-01|	ramen|	12|	Y
+C	|2021-01-01|	ramen|	12|	N
+C	|2021-01-01|	ramen|	12|	N
+C	|2021-01-07|	ramen|	12|	N
+
+***
+
+**10. Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.**
+
+```sql
+with cte as
+(
+	select 
+ 	       s.customer_id,
+	       s.order_date,
+	       m.product_name,
+	       m.price,
+	       case when s.order_date >= ms.join_date 
+	       then 'Y' else 'N' end as [members]
+	from sales s                                                        
+	join menu m                                                        
+	on s.product_id = m.product_id                                     
+	left join members ms
+	on s.customer_id = ms.customer_id
+)
+select 
+	customer_id,
+	order_date,
+	product_name,
+	price,
+	[members],
+	case when [members] = 'N' then NULL 
+	else DENSE_RANK() over(partition by customer_id,[members] 
+	order by order_date) end as ranking
+from cte;
+```
+
+**Solution :**
+
+customer_id|order_date|product_name|price|members|ranking
+---|---|---|---|---|---
+A	|2021-01-01|	sushi|	10|	N|NULL
+A	|2021-01-01|	curry|	15|	N|NULL
+A	|2021-01-07|	curry|	15|	Y|1
+A	|2021-01-10|	ramen|	12|	Y|2
+A	|2021-01-11|	ramen|	12|	Y|3
+A	|2021-01-11|	ramen|	12|	Y|3
+B	|2021-01-01|	curry|	15|	N|NULL
+B	|2021-01-02|	curry|	15|	N|NULL
+B	|2021-01-04|	sushi|	10|	N|NULL
+B	|2021-01-11|	sushi|	10|	Y|1
+B	|2021-01-16|	ramen|	12|	Y|2
+B	|2021-02-01|	ramen|	12|	Y|3
+C	|2021-01-01|	ramen|	12|	N|NULL
+C	|2021-01-01|	ramen|	12|	N|NULL
+C	|2021-01-07|	ramen|	12|	N|NULL
+
+***
 
 
 
