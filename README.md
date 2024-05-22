@@ -182,5 +182,115 @@ C|3|ramen
 
 **6. Which item was purchased first by the customer after they became a member?**
 
+```sql
+with cte as
+(
+	select
+               s.customer_id,
+	       s.order_date,
+	       s.product_id,
+	       ROW_NUMBER() over(partition by s.customer_id
+	       order by s.order_date) as ranks
+	from sales s
+	join members m
+	on s.customer_id = m.customer_id
+	where s.order_date >= m.join_date
+)
+select c.customer_id,
+       c.order_date,
+       m.product_name
+from cte c
+join menu m
+on c.product_id = m.product_id
+where ranks = 1;
+```
+
+**Solution :**
+customer_id|order_date|product_name
+---|---|---
+A|2021-01-07|curry
+B|2021-01-11|sushi
+
+***
+
+**7. Which item was purchased just before the customer became a member?**
+
+```sql
+with cte as
+(
+	select
+	       s.customer_id,
+	       s.order_date,
+	       s.product_id,
+	       ROW_NUMBER() over(partition by s.customer_id
+	       order by s.order_date) as ranks
+	from sales s
+	join members m
+	on s.customer_id = m.customer_id
+	where s.order_date < m.join_date
+),
+cte1 as
+(
+	select
+	       c.customer_id,
+	       c.order_date,
+	       m.product_name,
+	       ROW_NUMBER() over(partition by c.customer_id
+	       order by ranks desc) as ranks1
+	from cte c
+	join menu m
+	on c.product_id = m.product_id
+)
+select
+       ct.customer_id,
+       ct.order_date,
+       ct.product_name
+from cte1 ct
+where ranks1 = 1 ;
+```
+
+**Solution :**
+customer_id|order_date|product_name
+---|---|---
+A|2021-01-01|curry
+B|2021-01-04|sushi
+
+***
+
+**8. What is the total items and amount spent for each member before they became a member?**
+
+```sql
+with cte as 
+(
+	select
+	       s.customer_id,
+               s.order_date,
+               s.product_id,
+               me.join_date,
+               m.product_name,
+               m.price 
+	from sales s
+	join members me
+	on s.customer_id = me.customer_id
+	join menu m
+	on s.product_id = m.product_id
+	where s.order_date < me.join_date 
+)
+select
+       customer_id,
+       count(product_name) as total_products,
+       sum(price) as total_amount_spent
+from cte
+group by customer_id;
+```
+**Solution :**
+customer_id|total_products|total_amount_spent
+---|---|---
+A|2|25
+B|3|40
+
+***
+
+
 
 
