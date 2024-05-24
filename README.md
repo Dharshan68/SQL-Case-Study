@@ -87,7 +87,9 @@ with cte as
               customer_id,
               order_date
 	from sales
-	group by customer_id,order_date
+	group by
+                 customer_id,
+		 order_date
    ) 
 select 
       customer_id,
@@ -98,10 +100,10 @@ group by customer_id;
 **Steps:**
 
 ##### Common Table Expression (CTE):
-- CTE is used to get unique visit days of each customer by grouping the records by customer_id and order_date columns.
+- **CTE** is used to get unique visit days of each customer by grouping the records by `customer_id` and `order_date` columns.
 
 ##### Outer Query:
-- Group the result set of CTE by customer_id column and count( ) is used on the grouped records to calculate the total number of days each customer visited.
+- Group the result set of CTE by `customer_id` column and **count( )** is used on the grouped records to calculate the total number of days each customer visited.
 
 **Solution :**
 | customer_id | no_of_days_visited |
@@ -136,12 +138,12 @@ where ranks = 1;
 **Steps:**
 
 ##### Subquery: 
-- INNER JOIN is used to Combine the sales and menu tables on product_id column to get product names for each sale.
-- PARTITION BY s.customer_id creates a separate ranking for each customer and ORDER BY s.order_date ensures the orders are ranked chronologically.
-- ROW_NUMBER() window function assigns a unique rank to each order per customer based on the order date.
+- **INNER JOIN** is used to Combine the `sales` and `menu` tables on `roduct_id` column to get product names for each sale.
+- **PARTITION BY** `s.customer_id` creates a separate ranking for each customer and **ORDER BY** `s.order_date` ensures the orders are ranked chronologically.
+- **ROW_NUMBER()** window function assigns a unique rank to each order per customer based on the order date.
 
 ##### Outer Query:
-- WHERE Clause selects only the rows where the ranks is 1, which corresponds to the first order for each customer.
+- **WHERE** Clause selects only the rows where the ranks is 1, which corresponds to the first order for each customer.
 
 
 **Solution :**
@@ -166,10 +168,10 @@ group by m.product_name
 order by total desc;
 ```
 **Steps:**
-- INNER JOIN is used to Combine the sales and menu tables on product_id column to get product names for each sale.
-- GROUP BY Clause groups the results by product name and COUNT( ) is used to Count the number of times each product was purchased. The result is given an alias total_purchased for clarity.
-- ORDER BY Clause orders the results by the total number of purchases in descending order, so the most purchased product comes first.
-- TOP 1, Limits the result to the first row, which will be the most frequently purchased product.
+- **INNER JOIN** is used to Combine the `sales` and `menu` tables on `product_id` column to get product names for each sale.
+- **GROUP BY** Clause groups the results by product name and **COUNT( )** is used to Count the number of times each product was purchased. The result is given an alias `total_purchased` for clarity.
+- **ORDER BY** Clause orders the results by the total number of purchases in descending order, so the most purchased product comes first.
+- **TOP** 1, Limits the result to the first row, which will be the most frequently purchased product.
 
 
 **Solution :**
@@ -207,12 +209,12 @@ where ranks = 1;
 **Steps:**
 
 ##### Common Table Expression (CTE):
-- GROUP BY Clause and count(*) helps in determining the order count of each product by each customer.
-- dense_rank( ) assign a rank to each product ordered by each customer based on the order count.
+- **GROUP BY** Clause and **count(*)** helps in determining the order count of each product by each customer.
+- **dense_rank( )** assign a rank to each product ordered by each customer based on the order count.
 
 ##### Outer Query:
-- INNER JOIN is used to Combine the cte result set and menu tables on product_id column to get product names for each sale.
-- WHERE Clause selects only the rows where the ranks is 1, indicating the most frequently purchased product for each customer.
+- **INNER JOIN** is used to Combine the `cte` result set and `menu` tables on `product_id` column to get product names for each sale.
+- **WHERE** Clause selects only the rows where the ranks is 1, indicating the most frequently purchased product for each customer.
 
 **Solution :**
 customer_id|order_count|product_name
@@ -252,13 +254,13 @@ where ranks = 1;
 **Steps:**
 
 ##### Common Table Expression (CTE):
-- INNER JOIN matchs the customer_id from the sales table with the customer_id in the members table to identify customers who joined as members.
-- WHERE Clause helps in considering only the orders which are made after a customer's join date as member.
-- ROW_NUMBER() assigns a unique rank to each order per customer based on the order date.
+- **INNER JOIN** matchs the `customer_id` from the `sales` table with the `customer_id` in the `members` table to identify customers who joined as members.
+- **WHERE** Clause helps in considering only the orders which are made after a customer's join date as member.
+- **ROW_NUMBER()** assigns a unique rank to each order per customer based on the order date.
 
 ##### Outer Query:
-- INNER JOIN is used to Combine the cte result set and menu tables on product_id column to get product names for each sale.
-- WHERE Clause selects only the rows where the ranks is 1, indicating the first product purchased by each customer after joining as a member.
+- **INNER JOIN** is used to Combine the `cte` result set and `menu` tables on `product_id` column to get product names for each sale.
+- **WHERE** Clause selects only the rows where the ranks is 1, indicating the first product purchased by each customer after joining as a member.
 
 
 **Solution :**
