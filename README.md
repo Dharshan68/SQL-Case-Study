@@ -60,6 +60,11 @@ inner join menu m
 on s.product_id = m.product_id
 group by s.customer_id;
 ```
+**Steps:**
+
+INNER JOIN is used to merge sales and menu tables on product_id column to combine the matching sales records with menu records.
+
+Result set of inner join is grouped by sales.customer_id and SUM( ) is used to calculate the total amount spent by each customer.
 
 
 **Solution :**
@@ -88,9 +93,11 @@ select
 from cte
 group by customer_id;
 ```
+**Steps:**
 
+CTE is used to get unique visit days of each customer by grouping the records by customer_id and order_date columns.
 
-
+Group the result set of CTE by customer_id column and count( ) is used on the grouped records to calculate the total number of days each customer visited.
 
 **Solution :**
 | customer_id | no_of_days_visited |
@@ -124,6 +131,12 @@ where ranks = 1;
 
 **Steps:**
 
+Subquery: 
+	  INNER JOIN is used to Combine the sales and menu tables on product_id column to get product names for each sale.
+   	  PARTITION BY s.customer_id creates a separate ranking for each customer and ORDER BY s.order_date ensures the orders are ranked chronologically.
+          ROW_NUMBER() window function assigns a unique rank to each order per customer based on the order date.
+Outer Query:
+	      WHERE Clause selects only the rows where the ranks is 1, which corresponds to the first order for each customer.
 
 
 **Solution :**
