@@ -171,7 +171,7 @@ order by total desc;
 - **INNER JOIN** is used to Combine the `sales` and `menu` tables on `product_id` column to get product names for each sale.
 - **GROUP BY** Clause groups the results by product name and **COUNT( )** is used to Count the number of times each product was purchased. The result is given an alias `total_purchased` for clarity.
 - **ORDER BY** Clause orders the results by the total number of purchases in descending order, so the most purchased product comes first.
-- **TOP** 1, Limits the result to the first row, which will be the most frequently purchased product.
+- **TOP 1** , Limits the result to the first row, which will be the most frequently purchased product.
 
 
 **Solution :**
@@ -307,6 +307,20 @@ from cte1 ct
 where ranks1 = 1 ;
 ```
 
+**Steps:**
+
+##### First CTE (cte):
+- **INNER JOIN** matchs the `customer_id` from the `sales` table with the `customer_id` in the `members` table to identify customers who became members.
+- **WHERE** Clause only consider orders made before a customer's join date.
+- **ROW_NUMBER( )** assigns a unique rank to each order per customer based on the order date.
+
+##### Second CTE (cte1):
+- **INNER JOIN** matchs the `product_id` from the first `CTE` with the `product_id` in the `menu` table to get the product names.
+- **ROW_NUMBER( )** assigns a unique rank to each product per customer based on the descending order of the original rank (order by `ranks` desc). This will give the highest rank (most recent purchase) a rank of 1.
+
+##### Final Select Statement:
+- **WHERE** Clause selects only the rows where the rank (`ranks1`) is 1, indicating the last product purchased by each customer before joining as a member.
+
 **Solution :**
 customer_id|order_date|product_name
 ---|---|---
@@ -341,6 +355,19 @@ select
 from cte
 group by customer_id;
 ```
+
+**Steps:**
+
+##### Common Table Expression (CTE):
+- **INNER JOIN** matchs the `customer_id` from the `sales` table with `customer_id` in the `members` table to identify members and thier join date.
+- **INNER JOIN** matchs the `product_id` from the `sales` table with `product_id` in the `menu` table to get product details (name and price).
+- **WHERE** Clause only consider orders made before the customer's join date.
+
+##### Final Select Statement:
+- **Group by** Clause groups the table recored for each customer.
+- **count(product_name)** function used to count the total number of products purchased by each customer before joining.
+- **sum(price)** function used to calculate the total amount spent by each customer before joining.
+
 **Solution :**
 customer_id|total_products|total_amount_spent
 ---|---|---
