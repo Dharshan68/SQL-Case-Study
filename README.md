@@ -395,7 +395,6 @@ on s.customer_id = ms.customer_id
 
 **Steps:**
 
-##### Common Table Expression (CTE):
 - **INNER JOIN** matchs the `product_id` from the `sales` table with `product_id` in the `menu` table to get product details (name and price).
 - **LEFT JOIN** matchs the `customer_id` from the `sales` table with `customer_id` in the `members` table to get the membership join date. Used a left join to include all sales records, even if the customer is not a member.
 -  Used a **CASE** statement to determine if the customer was a member at the time of purchase. If the `order_date` is on or after the `join_date`, mark as 'Y' (yes), otherwise 'N' (no).
