@@ -13,7 +13,15 @@
 ***
 
 ## SQL skills gained
-I used 
+I used **SQL Server Management Studio (SSMS)** and thses are the particular functions I employed:
+
+- Aggregation Functions : SUM( ), COUNT( ).
+- Window Functions : ROW_NUMBER( ), DENSE_RANK( ).
+- Joins : INNER JOIN, LEFT JOIN.
+- Clauses : WHERE, GROUP BY, PARTITION BY, ORDER BY, TOP.
+- CTEs
+- CASE
+
 
 ***
 
