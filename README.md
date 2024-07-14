@@ -385,7 +385,7 @@ B|3|40
 
 ***
 
-**9. Join All The Things, Danny also requires further information about the ranking of customer products, but he purposely does not need the ranking for non-member purchases so he expects null ranking values for the records when customers are not yet part of the loyalty program.**
+**9. Join All The Tables and in separate column populate 'Y' if customer is member based on date of joining and 'N' if customer is not a member based on date of joining **
 
 ```sql
 select
