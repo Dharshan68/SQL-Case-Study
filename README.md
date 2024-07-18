@@ -385,7 +385,7 @@ B|3|40
 
 ***
 
-**9. Join All The Tables and in separate column populate 'Y' if customer is member based on date of joining and 'N' if customer is not a member based on date of joining **
+**9. Join All The Tables and in separate column populate 'Y' if customer is member based on date of joining and 'N' if customer is not a member based on date of joining**
 
 ```sql
 select
